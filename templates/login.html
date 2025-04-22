@@ -6,15 +6,20 @@
 </head>
 <body>
     <h1>Login</h1>
-    <form method="POST" action="/login">
+    <form method="POST" action="{{ url_for('login') }}">
         <label>Username:</label>
         <input type="text" name="username" required><br>
         <label>Password:</label>
         <input type="password" name="password" required><br>
         <button type="submit">Login</button>
     </form>
-    {% if error %}
-    <p style="color: red;">{{ error }}</p>
-    {% endif %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <p class="{{ category }}">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <p><a href="{{ url_for('register') }}">Need an account? Register</a></p>
 </body>
 </html>

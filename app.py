@@ -1,20 +1,25 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for, flash
 import mysql.connector
 import bcrypt
 
 app = Flask(__name__)
+app.secret_key = 'your-secret-key'  
 
 def connect_db():
     return mysql.connector.connect(
         host="localhost",
         user="root",
-        password="123456",
+        password="123456",  
         database="file_sharing"
     )
 
 @app.route('/')
 def home():
-    return 'Hello, this is my file sharing app!'
+    username = request.args.get('username')  
+    if not username:
+        flash('Please log in first', 'error')
+        return redirect(url_for('login'))
+    return render_template('home.html', username=username)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -32,9 +37,10 @@ def register():
             db.commit()
             cursor.close()
             db.close()
-            return redirect('/')
+            flash('Registration successful! Please log in.', 'success')
+            return redirect(url_for('login'))
         except mysql.connector.Error as e:
-            return f"Error: {e}"
+            return render_template('register.html', error=f"Error: {e}")
     return render_template('register.html')
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -50,11 +56,13 @@ def login():
             cursor.close()
             db.close()
             if result and bcrypt.checkpw(password, result[0]):
-                return 'Login successful!' 
+                return redirect(url_for('home', username=username))
             else:
-                return render_template('login.html', error='Invalid username or password')
+                flash('Invalid username or password', 'error')
+                return render_template('login.html')
         except mysql.connector.Error as e:
-            return f"Error: {e}"
+            flash(f"Error: {e}", 'error')
+            return render_template('login.html')
     return render_template('login.html')
 
 if __name__ == '__main__':

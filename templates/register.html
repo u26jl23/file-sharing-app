@@ -6,12 +6,20 @@
 </head>
 <body>
     <h1>Register</h1>
-    <form method="POST" action="/register">
+    <form method="POST" action="{{ url_for('register') }}">
         <label>Username:</label>
         <input type="text" name="username" required><br>
         <label>Password:</label>
         <input type="password" name="password" required><br>
         <button type="submit">Register</button>
     </form>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <p class="{{ category }}">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <p><a href="{{ url_for('login') }}">Already have an account? Login</a></p>
 </body>
 </html>

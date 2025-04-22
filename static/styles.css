@@ -1,7 +1,7 @@
 body {
     font-family: Arial, sans-serif;
     display: flex;
-    flex-direction: column; /* 垂直排列 */
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
@@ -11,7 +11,7 @@ body {
 h1 {
     text-align: center;
     color: #333;
-    margin-bottom: 20px; /* 与表单的间距 */
+    margin-bottom: 20px;
 }
 form {
     background-color: white;
@@ -44,7 +44,25 @@ button {
 button:hover {
     background-color: #0056b3;
 }
-p {
+p.error {
     text-align: center;
     color: red;
+}
+p.success {
+    text-align: center;
+    color: green;
+}
+a {
+    color: #007bff;
+    text-decoration: none;
+    margin-top: 10px;
+}
+a:hover {
+    text-decoration: underline;
+}
+nav {
+    margin-top: 10px;
+}
+nav a {
+    margin: 0 5px;
 }
